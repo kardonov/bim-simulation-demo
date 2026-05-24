@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="BIM Simulation",
     page_icon="🏗️",
     layout="wide",
-    initial_sidebar_state="expanded",  # collapsed saat login page
+    initial_sidebar_state="collapsed",  # collapsed saat login page
 )
 
 # Load CSS
@@ -87,8 +87,8 @@ def show_login():
             st.error(st.session_state.pop("_login_error"))
 
         with st.form("login_form"):
-            email    = st.text_input("", placeholder="email@example.com", label_visibility="collapsed")
-            password = st.text_input("", placeholder="Password", type="password", label_visibility="collapsed")
+            email    = st.text_input("Email", placeholder="email@example.com", label_visibility="collapsed")
+            password = st.text_input("Password", placeholder="Password", type="password", label_visibility="collapsed")
             col_a, col_b = st.columns([1, 1])
             with col_a:
                 st.checkbox("Ingat Saya")
@@ -101,16 +101,16 @@ def show_login():
                 )
             submit = st.form_submit_button("Login", use_container_width=True)
 
-        # Proses di LUAR blok form — aman untuk st.rerun()
+        # Proses di LUAR blok form — aman untuk st.experimental_rerun()
         if submit:
             success, msg = login_user(email, password)
             if success:
                 # Reset flag sidebar agar sidebar dibuka otomatis setelah login
                 st.session_state["_sidebar_opened"] = False
-                st.rerun()
+                st.experimental_rerun()
             else:
                 st.session_state["_login_error"] = msg
-                st.rerun()
+                st.experimental_rerun()
 
         st.markdown(
             '<p style="text-align:center;color:#666;font-size:0.9rem;margin-top:1rem;">'
@@ -119,7 +119,7 @@ def show_login():
         )
         if st.button("→ Buat Akun Baru", use_container_width=True, key="go_register"):
             st.session_state["page"] = "register"
-            st.rerun()
+            st.experimental_rerun()
 
 
 def show_register():
@@ -152,23 +152,23 @@ def show_register():
         if st.button("Buat Akun", use_container_width=True):
             if password != confirm_password:
                 st.session_state["_reg_error"] = "Password tidak cocok!"
-                st.rerun()
+                st.experimental_rerun()
             elif not all([nim_nidn, name, email, password]):
                 st.session_state["_reg_error"] = "Harap isi semua field!"
-                st.rerun()
+                st.experimental_rerun()
             else:
                 success, msg = register_user(email, password, name, role, nim_nidn, program, semester)
                 if success:
                     st.session_state["_reg_success"] = "Akun berhasil dibuat! Silakan login."
                     st.session_state["page"] = "login"
-                    st.rerun()
+                    st.experimental_rerun()
                 else:
                     st.session_state["_reg_error"] = msg
-                    st.rerun()
+                    st.experimental_rerun()
 
         if st.button("← Sudah punya akun? Masuk", key="go_login"):
             st.session_state["page"] = "login"
-            st.rerun()
+            st.experimental_rerun()
 
 
 def show_sidebar():
@@ -201,7 +201,7 @@ def show_sidebar():
         for label, key in pages.items():
             if st.button(label, key=f"nav_{key}", use_container_width=True):
                 st.session_state["page"] = key
-                st.rerun()
+                st.experimental_rerun()
 
         st.markdown("---")
         user = st.session_state.get("user", {})
@@ -214,11 +214,11 @@ def show_sidebar():
             # Reset flag agar sidebar collapse lagi saat login berikutnya
             st.session_state["_sidebar_opened"] = False
             logout_user()
-            st.rerun()
+            st.experimental_rerun()
 
 
 # ─── Routing ───────────────────────────────────────────────────────────────────
-logged_in = st.session_state.get("logged_in", True)
+logged_in = st.session_state.get("logged_in", False)
 
 set_body_class(logged_in)
 

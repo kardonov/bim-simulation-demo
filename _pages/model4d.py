@@ -43,11 +43,11 @@ def show():
                                 (nama_pek, str(tgl_mulai), str(tgl_selesai), deskripsi, model3d_id, user_id))
                         st.success("Jadwal ditambahkan!")
                         st.session_state["show_add_4d"] = False
-                        st.rerun()
+                        st.experimental_rerun()
             with c_cancel:
                 if st.button("❌ Batal", use_container_width=True):
                     st.session_state["show_add_4d"] = False
-                    st.rerun()
+                    st.experimental_rerun()
 
     # ── Filter ─────────────────────────────────────────────
     st.markdown("---")
@@ -159,4 +159,4 @@ def _show_list_view(filtered):
         with c6:
             if st.button("🗑️", key=f"del4d_{row[0]}", help="Hapus"):
                 execute("DELETE FROM model4d WHERE id=?", (row[0],))
-                st.rerun()
+                st.experimental_rerun()

@@ -77,28 +77,25 @@ def show():
     col_e1, col_e2, col_e3 = st.columns(3)
 
     with col_e1:
-        if st.button("📥 Export Model 3D (CSV)", use_container_width=True):
-            rows = query("SELECT id, nama_pekerjaan, created_at FROM model3d")
-            df = pd.DataFrame(rows, columns=["ID", "Nama Pekerjaan", "Dibuat"])
-            csv = df.to_csv(index=False)
-            st.download_button("⬇️ Download CSV", csv, "model3d.csv", "text/csv")
+        rows = query("SELECT id, nama_pekerjaan, created_at FROM model3d")
+        df = pd.DataFrame(rows, columns=["ID", "Nama Pekerjaan", "Dibuat"])
+        csv = df.to_csv(index=False).encode("utf-8")
+        st.download_button("📥 Export Model 3D (CSV)", csv, "model3d.csv", "text/csv", use_container_width=True)
 
     with col_e2:
-        if st.button("📥 Export Jadwal (CSV)", use_container_width=True):
-            rows = query("SELECT id, nama_pekerjaan, tanggal_mulai, tanggal_selesai, deskripsi FROM model4d")
-            df = pd.DataFrame(rows, columns=["ID", "Pekerjaan", "Mulai", "Selesai", "Deskripsi"])
-            csv = df.to_csv(index=False)
-            st.download_button("⬇️ Download CSV", csv, "jadwal.csv", "text/csv")
+        rows = query("SELECT id, nama_pekerjaan, tanggal_mulai, tanggal_selesai, deskripsi FROM model4d")
+        df = pd.DataFrame(rows, columns=["ID", "Pekerjaan", "Mulai", "Selesai", "Deskripsi"])
+        csv = df.to_csv(index=False).encode("utf-8")
+        st.download_button("📥 Export Jadwal (CSV)", csv, "jadwal.csv", "text/csv", use_container_width=True)
 
     with col_e3:
-        if st.button("📥 Export Biaya (CSV)", use_container_width=True):
-            rows = query("""
-                SELECT m.nama_pekerjaan, m5.volume, m5.satuan, m5.harga_satuan, m5.total
-                FROM model5d m5 JOIN model3d m ON m5.model3d_id=m.id
-            """)
-            df = pd.DataFrame(rows, columns=["Pekerjaan", "Volume", "Satuan", "Harga Satuan", "Total"])
-            csv = df.to_csv(index=False)
-            st.download_button("⬇️ Download CSV", csv, "biaya.csv", "text/csv")
+        rows = query("""
+            SELECT m.nama_pekerjaan, m5.volume, m5.satuan, m5.harga_satuan, m5.total
+            FROM model5d m5 JOIN model3d m ON m5.model3d_id=m.id
+        """)
+        df = pd.DataFrame(rows, columns=["Pekerjaan", "Volume", "Satuan", "Harga Satuan", "Total"])
+        csv = df.to_csv(index=False).encode("utf-8")
+        st.download_button("📥 Export Biaya (CSV)", csv, "biaya.csv", "text/csv", use_container_width=True)
 
     st.markdown("---")
 

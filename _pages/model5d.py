@@ -24,7 +24,7 @@ def show():
             active = "🔵" if m[0] == sel_id else "⚪"
             if st.button(f"{active} {m[1]}", key=f"sel5d_{m[0]}", use_container_width=True):
                 st.session_state["sel_5d_id"] = m[0]
-                st.rerun()
+                st.experimental_rerun()
 
     with col_detail:
         sel_model = next((m for m in models if m[0] == sel_id), models[0])
@@ -36,12 +36,34 @@ def show():
         # Get existing 5D entries
         existing_5d = query("SELECT id, volume, satuan, harga_satuan, total FROM model5d WHERE model3d_id=?", (sel_model[0],))
 
-        # If none, create from perhitungan
-        if not existing_5d and perh:
-            user_id = st.session_state["user"]["id"]
-            for p in perh:
-                execute("INSERT INTO model5d (model3d_id, volume, satuan, harga_satuan, total, created_by) VALUES (?,?,?,?,?,?)",
-                        (sel_model[0], p.get("hasil", 0), p.get("satuan", "m2"), 0, 0, user_id))
+        # Sync model5d entries with latest calculations from model3d
+        user_id = st.session_state["user"]["id"]
+        if perh:
+            # If the database has fewer rows than calculations, insert the missing ones
+            if len(existing_5d) < len(perh):
+                for p in perh[len(existing_5d):]:
+                    execute("INSERT INTO model5d (model3d_id, volume, satuan, harga_satuan, total, created_by) VALUES (?,?,?,?,?,?)",
+                            (sel_model[0], p.get("hasil", 0), p.get("satuan", "m2"), 0, 0, user_id))
+            # If the database has more rows than calculations, delete the extra ones
+            elif len(existing_5d) > len(perh):
+                extra_ids = [row[0] for row in existing_5d[len(perh):]]
+                for eid in extra_ids:
+                    execute("DELETE FROM model5d WHERE id=?", (eid,))
+            
+            # Refresh entries
+            existing_5d = query("SELECT id, volume, satuan, harga_satuan, total FROM model5d WHERE model3d_id=?", (sel_model[0],))
+            
+            # Update volume, satuan and total for all rows to match latest calculations
+            for row_5d, p in zip(existing_5d, perh):
+                new_volume = p.get("hasil", 0)
+                new_satuan = p.get("satuan", "m2")
+                harga_satuan = row_5d[3] or 0
+                new_total = new_volume * harga_satuan
+                if row_5d[1] != new_volume or row_5d[2] != new_satuan or row_5d[4] != new_total:
+                    execute("UPDATE model5d SET volume=?, satuan=?, total=? WHERE id=?", 
+                            (new_volume, new_satuan, new_total, row_5d[0]))
+            
+            # Final refresh after updates
             existing_5d = query("SELECT id, volume, satuan, harga_satuan, total FROM model5d WHERE model3d_id=?", (sel_model[0],))
 
         # Table header
@@ -53,7 +75,8 @@ def show():
 
         grand_total = 0
         updated_rows = []
-        for i, (row_5d, p) in enumerate(zip(existing_5d, perh if perh else [{"label": f"Volume Pekerjaan {i+1}"}] * len(existing_5d))):
+        fallback_labels = [{"label": f"Volume Pekerjaan {j+1}"} for j in range(len(existing_5d))]
+        for i, (row_5d, p) in enumerate(zip(existing_5d, perh if perh else fallback_labels)):
             c1, c2, c3, c4, c5, c6 = st.columns([0.5, 3, 2, 2, 2, 2])
             with c1: st.write(i + 1)
             with c2: st.write(p.get("label", f"Pekerjaan {i+1}"))
@@ -78,7 +101,7 @@ def show():
             for harga, total, rid in updated_rows:
                 execute("UPDATE model5d SET harga_satuan=?, total=? WHERE id=?", (harga, total, rid))
             st.success("Harga berhasil diperbarui!")
-            st.rerun()
+            st.experimental_rerun()
 
         st.markdown("---")
 
@@ -126,4 +149,4 @@ def show():
                     execute("INSERT INTO komentar (model5d_id, user_id, komentar) VALUES (?,?,?)",
                             (existing_5d[0][0], user_id, komentar.strip()))
                     st.success("Komentar dikirim!")
-                    st.rerun()
+                    st.experimental_rerun()

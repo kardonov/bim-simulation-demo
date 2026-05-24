@@ -29,7 +29,8 @@ def show():
             row = query("SELECT * FROM model3d WHERE id=?", (edit_id,), fetchone=True)
             if row:
                 existing = {
-                    "id": row[0], "nama": row[1],
+                    "id": row[0],
+                    "nama": row[1],
                     "dimensi": json.loads(row[2] or "[]"),
                     "perhitungan": json.loads(row[3] or "[]"),
                 }
@@ -47,21 +48,33 @@ def show():
             for i, d in enumerate(dimensi_rows):
                 c1, c2, c3, c4 = st.columns([3, 2, 2, 1])
                 with c1:
-                    lbl = st.text_input(f"Label Dimensi", value=d["label"], key=f"dlbl_{i}", label_visibility="collapsed", placeholder="Nama dimensi")
+                    lbl = st.text_input(
+                        f"Label Dimensi",
+                        value=d["label"],
+                        key=f"dlbl_{i}",
+                        label_visibility="collapsed",
+                        placeholder="Nama dimensi",
+                    )
                 with c2:
                     val = st.number_input(f"Nilai", value=float(d["value"]), key=f"dval_{i}", label_visibility="collapsed")
                 with c3:
-                    sat = st.selectbox("Satuan", ["m", "cm", "mm", "m2", "m3"], index=["m","cm","mm","m2","m3"].index(d["satuan"]) if d["satuan"] in ["m","cm","mm","m2","m3"] else 0, key=f"dsat_{i}", label_visibility="collapsed")
+                    sat = st.selectbox(
+                        "Satuan",
+                        ["m", "cm", "mm", "m2", "m3"],
+                        index=["m", "cm", "mm", "m2", "m3"].index(d["satuan"]) if d["satuan"] in ["m", "cm", "mm", "m2", "m3"] else 0,
+                        key=f"dsat_{i}",
+                        label_visibility="collapsed",
+                    )
                 with c4:
                     if st.button("➖", key=f"drem_{i}") and len(dimensi_rows) > 1:
                         st.session_state["dimensi_rows"].pop(i)
-                        st.rerun()
+                        st.experimental_rerun()
                 new_dimensi.append({"label": lbl, "value": val, "satuan": sat})
             st.session_state["dimensi_rows"] = new_dimensi
 
             if st.button("➕ Tambah Dimensi"):
                 st.session_state["dimensi_rows"].append({"label": "", "value": 0, "satuan": "m"})
-                st.rerun()
+                st.experimental_rerun()
 
             st.markdown("#### 🧮 Perhitungan Dimensi")
             if "perh_rows" not in st.session_state or not st.session_state.get("_perh_init"):
@@ -85,7 +98,7 @@ def show():
                 with c4:
                     if st.button("➖", key=f"prem_{i}") and len(perh_rows) > 1:
                         st.session_state["perh_rows"].pop(i)
-                        st.rerun()
+                        st.experimental_rerun()
                 hasil = eval_formula(pform, ctx)
                 if pform:
                     st.markdown(f"<small style='color:#10b981'>✅ Hasil: <b>{hasil} {psat}</b></small>", unsafe_allow_html=True)
@@ -94,10 +107,10 @@ def show():
 
             if st.button("➕ Tambah Perhitungan"):
                 st.session_state["perh_rows"].append({"label": "", "formula": "", "hasil": 0, "satuan": "m2"})
-                st.rerun()
+                st.experimental_rerun()
 
             st.markdown("---")
-            st.markdown("**📌 Panduan Rumus:**  `+ Tambah` &nbsp; `- Kurang` &nbsp; `* Kali` &nbsp; `/ Bagi` &nbsp; `** Pangkat`")
+            st.markdown('**📌 Panduan Rumus:**  `+ Tambah` &nbsp; `- Kurang` &nbsp; `* Kali` &nbsp; `/ Bagi` &nbsp; `** Pangkat`', unsafe_allow_html=True)
 
             c_save, c_cancel = st.columns([1, 1])
             with c_save:
@@ -120,14 +133,14 @@ def show():
                         st.session_state["edit_model3d_id"] = None
                         st.session_state["_dimensi_init"] = False
                         st.session_state["_perh_init"] = False
-                        st.rerun()
+                        st.experimental_rerun()
             with c_cancel:
                 if st.button("❌ Batal", use_container_width=True):
                     st.session_state["show_add_model3d"] = False
                     st.session_state["edit_model3d_id"] = None
                     st.session_state["_dimensi_init"] = False
                     st.session_state["_perh_init"] = False
-                    st.rerun()
+                    st.experimental_rerun()
 
     # ── Search & List ──────────────────────────────────────
     st.markdown("---")
@@ -146,15 +159,20 @@ def show():
     if rows:
         st.markdown('<div class="table-header">📋 Data Pekerjaan 3D</div>', unsafe_allow_html=True)
         col_n, col_nm, col_ak = st.columns([0.5, 5, 2])
-        with col_n: st.markdown("**#**")
-        with col_nm: st.markdown("**Nama Pekerjaan**")
-        with col_ak: st.markdown("**Aksi**")
+        with col_n:
+            st.markdown("**#**")
+        with col_nm:
+            st.markdown("**Nama Pekerjaan**")
+        with col_ak:
+            st.markdown("**Aksi**")
         st.markdown('<hr style="margin:0.3rem 0"/>', unsafe_allow_html=True)
 
         for i, row in enumerate(rows[:per_page]):
             c1, c2, c3 = st.columns([0.5, 5, 2])
-            with c1: st.write(i + 1)
-            with c2: st.write(row[1])
+            with c1:
+                st.write(i + 1)
+            with c2:
+                st.write(row[1])
             with c3:
                 b1, b2, b3 = st.columns(3)
                 with b1:
@@ -166,12 +184,12 @@ def show():
                         st.session_state["show_add_model3d"] = False
                         st.session_state["_dimensi_init"] = False
                         st.session_state["_perh_init"] = False
-                        st.rerun()
+                        st.experimental_rerun()
                 with b3:
                     if st.button("🗑️", key=f"del_{row[0]}", help="Hapus"):
                         execute("DELETE FROM model3d WHERE id=?", (row[0],))
                         st.success(f"Model '{row[1]}' dihapus.")
-                        st.rerun()
+                        st.experimental_rerun()
 
             # Detail inline
             if st.session_state.get("detail_model3d") == row[0]:
@@ -191,6 +209,6 @@ def show():
                                 st.markdown(f"- {p['label']}: `{p['formula']} = {p['hasil']} {p['satuan']}`")
                         if st.button("Tutup Detail", key=f"close_detail_{row[0]}"):
                             st.session_state["detail_model3d"] = None
-                            st.rerun()
+                            st.experimental_rerun()
     else:
         st.info("Belum ada data model 3D.")

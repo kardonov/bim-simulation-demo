@@ -35,11 +35,11 @@ def show():
                                     (judul, deskripsi, file_path, user["id"]))
                             st.success("Materi berhasil ditambahkan!")
                             st.session_state["show_add_materi"] = False
-                            st.rerun()
+                            st.experimental_rerun()
                 with c2:
                     if st.button("❌ Batal", use_container_width=True):
                         st.session_state["show_add_materi"] = False
-                        st.rerun()
+                        st.experimental_rerun()
 
     st.markdown("---")
     search = st.text_input("🔍 Cari materi...", placeholder="Cari judul materi...", label_visibility="collapsed")
@@ -91,4 +91,4 @@ def show():
             if is_dosen:
                 if st.button("🗑️ Hapus", key=f"del_materi_{row[0]}"):
                     execute("DELETE FROM materi WHERE id=?", (row[0],))
-                    st.rerun()
+                    st.experimental_rerun()

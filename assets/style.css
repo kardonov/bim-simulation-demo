@@ -1,0 +1,339 @@
+/* ── Global ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.main .block-container {
+    padding: 1.5rem 2rem 2rem;
+    max-width: 1200px;
+}
+
+/* ── Sidebar ────────────────────────────────────────────── */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #1a2744 0%, #1e3a5f 100%) !important;
+    border-right: 1px solid #2d4a7a;
+}
+
+[data-testid="stSidebar"] .stButton > button {
+    background: transparent;
+    color: #c5d8ff;
+    border: none;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: #ffffff15;
+    color: #fff;
+    transform: translateX(3px);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem 1rem 1rem;
+    border-bottom: 1px solid #2d4a7a;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Login Card ─────────────────────────────────────────── */
+.login-card {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0 1.5rem;
+}
+
+.logo-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a2744, #2563eb);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px #2563eb40;
+}
+
+/* ── Register Card ──────────────────────────────────────── */
+.register-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px #00000015;
+    margin: 2rem 0;
+}
+
+/* ── Welcome Banner ─────────────────────────────────────── */
+.welcome-banner {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 16px #3b82f640;
+}
+
+/* ── Stat Cards ─────────────────────────────────────────── */
+.stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid #e8edf5;
+    box-shadow: 0 2px 8px #00000008;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 20px #3b5bdb20;
+}
+
+/* ── Chart title ─────────────────────────────────────────── */
+.chart-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.8rem;
+    background: #f1f5f9;
+    border-radius: 8px;
+    border-left: 4px solid #3b5bdb;
+}
+
+/* ── Page Title ─────────────────────────────────────────── */
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+/* ── Table ──────────────────────────────────────────────── */
+.table-header {
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    padding: 0.7rem 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.found-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+/* ── Calendar ───────────────────────────────────────────── */
+.calendar-week-header {
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem;
+    text-align: center;
+}
+
+.cal-cell {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.4rem;
+    min-height: 80px;
+    background: #f8fafc;
+    font-size: 0.78rem;
+}
+
+.cal-cell-weekend {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.4rem;
+    min-height: 80px;
+    background: #f1f5f9;
+    font-size: 0.78rem;
+    opacity: 0.7;
+}
+
+.cal-cell-empty {
+    min-height: 80px;
+}
+
+.cal-day-label {
+    font-weight: 700;
+    color: #334155;
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.2rem;
+}
+
+.cal-event {
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 4px;
+    padding: 0.15rem 0.3rem;
+    margin: 0.1rem 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cal-no-event {
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-style: italic;
+}
+
+/* ── Materi Cards ───────────────────────────────────────── */
+.materi-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.materi-card:hover {
+    box-shadow: 0 4px 16px #3b5bdb20;
+    border-color: #3b5bdb;
+}
+
+.materi-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.materi-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1e293b;
+    margin-bottom: 0.3rem;
+}
+
+.materi-desc {
+    font-size: 0.83rem;
+    color: #64748b;
+}
+
+.materi-date {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 0.4rem;
+}
+
+/* ── Comment Bubble ─────────────────────────────────────── */
+.comment-bubble {
+    background: #f1f5f9;
+    border-left: 3px solid #3b5bdb;
+    border-radius: 0 8px 8px 0;
+    padding: 0.5rem 0.8rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+/* ── Info Card ──────────────────────────────────────────── */
+.info-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.stButton > button[data-testid*="Login"],
+div[data-testid="column"] .stButton > button {
+    border-radius: 10px;
+}
+
+/* Primary button style */
+.stButton > button {
+    border-radius: 10px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    transition: all 0.2s;
+}
+
+/* ── Input fields ───────────────────────────────────────── */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div {
+    border-radius: 10px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    border-color: #3b5bdb !important;
+    box-shadow: 0 0 0 3px #3b5bdb20 !important;
+}
+
+/* ── Expander ───────────────────────────────────────────── */
+.streamlit-expanderHeader {
+    background: #f8fafc;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Hide default streamlit elements */
+#MainMenu, footer, header {visibility: hidden;}
+
+/* ── Sembunyikan navigasi multipage otomatis Streamlit ──── */
+/* Menyembunyikan seluruh nav bar pages/ di sidebar */
+[data-testid="stSidebarNav"],
+[data-testid="stSidebarNavItems"],
+[data-testid="stSidebarNavLink"],
+section[data-testid="stSidebar"] > div > div > div > ul,
+section[data-testid="stSidebar"] nav,
+.st-emotion-cache-1cypcdb,
+.st-emotion-cache-eczf1f,
+.st-emotion-cache-16idsys {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* ── Sembunyikan sidebar + tombol toggle saat halaman login ─────────── */
+body.bim-guest section[data-testid="stSidebar"],
+body.bim-guest [data-testid="collapsedControl"],
+body.bim-guest button[kind="header"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Konten login full-width tanpa offset sidebar */
+body.bim-guest .main .block-container {
+    max-width: 100% !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
